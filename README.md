@@ -133,3 +133,8 @@ is an unpatched capture; `testdata/bundle_database.data` is the same file
 already patched at patch number 999, used to verify `dtpatch`'s output
 byte-for-byte. `testdata/9ba626afa44a3aa3.patch_999` is a real patch
 bundle file kept for reference only; `dtpatch` never touches it.
+
+## References
+
+- [dtkit-patch](https://github.com/manshanko/dtkit-patch)
+- [Darktide Mod Framework docs](https://dmf-docs.darkti.de/)
