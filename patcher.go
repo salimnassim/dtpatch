@@ -28,6 +28,10 @@ func resolvePatchNum(n int) int {
 	return n
 }
 
+// Patch injects a patch record into the bundle database,
+// backing up the untouched database to BackupName first.
+// It returns ErrAlreadyPatched if the target patch number is already present, or
+// ErrUnexpectedPatch001 if the database contains a pre-existing patch_001 record.
 func Patch(opts Options) error {
 	num := resolvePatchNum(opts.PatchNum)
 
@@ -65,6 +69,9 @@ func Patch(opts Options) error {
 	return writeBundleDB(opts.Dir, patched, 0o644)
 }
 
+// Unpatch restores the bundle database from its backup.
+// It returns ErrNotPatched if the target patch number isn't present (unless
+// opts.Force is set) or if no backup file is found.
 func Unpatch(opts Options) error {
 	num := resolvePatchNum(opts.PatchNum)
 
@@ -84,6 +91,7 @@ func Unpatch(opts Options) error {
 	return restoreBundleDB(opts.Dir)
 }
 
+// Toggle patches or unpatches the bundle database.
 func Toggle(opts Options) error {
 	patched, err := Status(opts.Dir, opts.PatchNum)
 	if err != nil {
@@ -95,6 +103,8 @@ func Toggle(opts Options) error {
 	return Patch(opts)
 }
 
+// Status reports whether the bundle database is tagged as patched
+// with the given patch number.
 func Status(dir string, num int) (bool, error) {
 	data, err := readBundleDB(dir)
 	if err != nil {
