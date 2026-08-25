@@ -29,7 +29,23 @@ func locateRecord(data []byte) (int, error) {
 }
 
 func hasTag(data []byte, patchNum int) bool {
-	return bytes.Contains(data, fmt.Appendf(nil, "patch_%d", patchNum))
+	tag := fmt.Appendf(nil, "patch_%d", patchNum)
+	rest := data
+	for {
+		i := bytes.Index(rest, tag)
+		if i < 0 {
+			return false
+		}
+		end := i + len(tag)
+		if end >= len(rest) || !isDigit(rest[end]) {
+			return true
+		}
+		rest = rest[i+1:]
+	}
+}
+
+func isDigit(b byte) bool {
+	return b >= '0' && b <= '9'
 }
 
 func hasNextPatchWarning(data []byte) bool {
