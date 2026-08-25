@@ -57,7 +57,8 @@ func Patch(opts Options) error {
 		return fmt.Errorf("backup bundle database: %w", err)
 	}
 
-	patched := append([]byte{}, data[:offset]...)
+	patched := make([]byte, 0, len(data)-OldRecordSize+len(newRecord))
+	patched = append(patched, data[:offset]...)
 	patched = append(patched, newRecord...)
 	patched = append(patched, data[offset+OldRecordSize:]...)
 

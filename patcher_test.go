@@ -46,8 +46,8 @@ func TestPatchMatchesGolden(t *testing.T) {
 		t.Fatalf("locateRecord(want) = %v", err)
 	}
 
-	gotRecord := got[offGot : offGot+184]
-	wantRecord := want[offWant : offWant+184]
+	gotRecord := got[offGot : offGot+goldenRecordSize]
+	wantRecord := want[offWant : offWant+goldenRecordSize]
 	if !bytes.Equal(gotRecord, wantRecord) {
 		t.Errorf("patched record = %x, want %x", gotRecord, wantRecord)
 	}
