@@ -10,6 +10,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+const goldenRecordSize = 184
+
 func TestBuildPatchRecordGolden(t *testing.T) {
 	bak, err := os.ReadFile("testdata/bundle_database.data.bak")
 	if err != nil {
@@ -33,7 +35,7 @@ func TestBuildPatchRecordGolden(t *testing.T) {
 	}
 
 	origRecord := bak[offBak : offBak+OldRecordSize]
-	want := patched[offData : offData+184]
+	want := patched[offData : offData+goldenRecordSize]
 
 	got, err := buildPatchRecord(origRecord, 999)
 	if err != nil {
